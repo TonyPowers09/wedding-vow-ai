@@ -18,9 +18,25 @@ const InputField = ({ label, id, value, onChange, placeholder, required = false,
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>
     {type === 'textarea' ? (
-      <textarea id={id} value={value} onChange={onChange} placeholder={placeholder} required={required} rows={3} className="w-full px-3 py-2 bg-white border border-brand-accent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-shadow" />
+      <textarea
+        id={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        rows={3}
+        className="w-full px-3 py-2 bg-white dark:bg-brand-muted-dark border border-brand-accent dark:border-slate-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary dark:focus:ring-brand-secondary focus:border-brand-primary dark:focus:border-brand-secondary transition-shadow dark:text-slate-100"
+      />
     ) : (
-      <input type="text" id={id} value={value} onChange={onChange} placeholder={placeholder} required={required} className="w-full px-3 py-2 bg-white border border-brand-accent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-shadow" />
+      <input
+        type="text"
+        id={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        className="w-full px-3 py-2 bg-white dark:bg-brand-muted-dark border border-brand-accent dark:border-slate-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary dark:focus:ring-brand-secondary focus:border-brand-primary dark:focus:border-brand-secondary transition-shadow dark:text-slate-100"
+      />
     )}
   </div>
 );
@@ -36,7 +52,13 @@ type SelectFieldProps = {
 const SelectField = ({ label, id, value, onChange, options }: SelectFieldProps) => (
   <div>
       <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>
-      <select id={id} value={value} onChange={onChange} className="w-full px-3 py-2 bg-white border border-brand-accent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-shadow appearance-none bg-no-repeat bg-right pr-8" style={{backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23C08497' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`}}>
+      <select
+        id={id}
+        value={value}
+        onChange={onChange}
+        className="w-full px-3 py-2 bg-white dark:bg-brand-muted-dark border border-brand-accent dark:border-slate-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary dark:focus:ring-brand-secondary focus:border-brand-primary dark:focus:border-brand-secondary transition-shadow appearance-none bg-no-repeat bg-right pr-8 dark:text-slate-100"
+        style={{backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23C08497' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`}}
+      >
         {options.map(option => <option key={option} value={option}>{option}</option>)}
       </select>
   </div>
@@ -127,15 +149,15 @@ const VowGenerator = () => {
   
   if (!apiKey) {
     return (
-       <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent border border-white text-center">
-         <h2 className="text-xl font-serif text-brand-primary mb-4">API Key Required</h2>
-         <p className="text-brand-text">Please refresh the page to enter your Google Gemini API Key. This application cannot function without it.</p>
+       <div className="w-full max-w-2xl bg-white/70 dark:bg-brand-muted-dark/80 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent/60 dark:shadow-black/30 border border-white/80 dark:border-slate-700 text-center">
+         <h2 className="text-xl font-serif text-brand-primary dark:text-brand-secondary mb-4">API Key Required</h2>
+         <p className="text-brand-text dark:text-slate-200">Please refresh the page to enter your Google Gemini API Key. This application cannot function without it.</p>
        </div>
     )
   }
 
   return (
-    <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent border border-white">
+    <div className="w-full max-w-2xl bg-white/70 dark:bg-brand-muted-dark/80 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent/60 dark:shadow-black/30 border border-white/80 dark:border-slate-700 transition-colors">
       <form onSubmit={handleGenerateVow} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField label="Partner's Name" id="partnerName" value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder="e.g., Alex" required />
@@ -162,15 +184,15 @@ const VowGenerator = () => {
         </button>
       </form>
       
-      {error && <div className="mt-6 p-4 bg-red-100 text-red-700 border border-red-200 rounded-lg">{error}</div>}
+      {error && <div className="mt-6 p-4 bg-red-100 text-red-700 dark:bg-red-900/60 dark:text-red-200 border border-red-200 dark:border-red-400/40 rounded-lg">{error}</div>}
 
       <div className="mt-8">
         {isLoading && <Loader />}
         {generatedVow && (
-          <div className="p-6 bg-brand-accent/50 border border-brand-accent rounded-lg relative animate-fade-in">
-            <h3 className="font-serif text-xl text-brand-primary mb-4">Your Vow:</h3>
-            <p className="whitespace-pre-wrap text-brand-text leading-relaxed font-sans">{generatedVow}</p>
-            <button onClick={handleCopy} className="absolute top-4 right-4 bg-white text-brand-primary px-3 py-1 rounded-full text-sm hover:bg-brand-accent transition-colors shadow-sm">
+          <div className="p-6 bg-brand-accent/50 dark:bg-brand-muted-dark/90 border border-brand-accent dark:border-slate-700 rounded-lg relative animate-fade-in">
+            <h3 className="font-serif text-xl text-brand-primary dark:text-brand-secondary mb-4">Your Vow:</h3>
+            <p className="whitespace-pre-wrap text-brand-text dark:text-slate-100 leading-relaxed font-sans">{generatedVow}</p>
+            <button onClick={handleCopy} className="absolute top-4 right-4 bg-white dark:bg-brand-secondary text-brand-primary dark:text-brand-surface-dark px-3 py-1 rounded-full text-sm hover:bg-brand-accent dark:hover:bg-white transition-colors shadow-sm">
                 {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>

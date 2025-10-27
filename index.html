@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
@@ -23,13 +24,15 @@
               'brand-secondary': '#F7AF9D',
               'brand-accent': '#F3E1E1',
               'brand-text': '#5A3E36',
+              'brand-surface-dark': '#111827',
+              'brand-muted-dark': '#1f2937'
             }
           }
         }
       }
     </script>
 </head>
-  <body class="bg-brand-background">
+  <body class="bg-brand-background text-brand-text dark:bg-brand-surface-dark dark:text-slate-100 transition-colors">
     <div id="root"></div>
   <script type="module" src="./index.tsx"></script>
 </body>
