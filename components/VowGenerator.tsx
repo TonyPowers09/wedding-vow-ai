@@ -64,7 +64,13 @@ const SelectField = ({ label, id, value, onChange, options }: SelectFieldProps) 
   </div>
 );
 
-const presetApiKey = import.meta.env.VITE_GEMINI_API_KEY?.trim();
+const DEFAULT_GEMINI_API_KEY = 'AIzaSyBI68ndFN_ypRget0CY-tv78FKSaaQzkv8';
+
+const presetApiKey = (() => {
+  const fromEnv = import.meta.env.VITE_GEMINI_API_KEY;
+  const candidate = (fromEnv ?? DEFAULT_GEMINI_API_KEY).trim();
+  return candidate.length > 0 ? candidate : null;
+})();
 
 const VowGenerator = () => {
   const [apiKey, setApiKey] = useState<string | null>(() => (presetApiKey && presetApiKey.length > 0 ? presetApiKey : null));
