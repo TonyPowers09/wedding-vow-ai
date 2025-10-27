@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { VowTone, VowLength } from '../types';
-import { generateVow } from '../services/geminiService';
-import Loader from './Loader';
+import { VowTone, VowLength } from '../types.ts';
+import { generateVow } from '../services/geminiService.ts';
+import Loader from './Loader.tsx';
 
+// Moved component definitions outside of VowGenerator to prevent re-creation on every render.
+// This is the fix for the input fields losing focus.
 const InputField: React.FC<{ label: string; id: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; placeholder: string; required?: boolean; type?: 'text' | 'textarea'; }> = ({ label, id, value, onChange, placeholder, required = false, type = 'text' }) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>

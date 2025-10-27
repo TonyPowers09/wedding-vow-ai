@@ -1,8 +1,7 @@
-
 import React from 'react';
-import Header from './components/Header';
-import VowGenerator from './components/VowGenerator';
-import Footer from './components/Footer';
+import Header from './components/Header.tsx';
+import VowGenerator from './components/VowGenerator.tsx';
+import Footer from './components/Footer.tsx';
 
 const App: React.FC = () => {
   return (
