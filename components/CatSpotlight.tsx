@@ -1,5 +1,5 @@
 const CAT_IMAGE_URL =
-  'https://drive.google.com/uc?export=view&id=1ohpd5WgCBahAXek4HbuIA2hHEcDjf09y';
+  'https://drive.google.com/uc?id=1ohpd5WgCBahAXek4HbuIA2hHEcDjf09y';
 
 const CatSpotlight = () => {
   return (
