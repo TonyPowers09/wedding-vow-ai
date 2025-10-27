@@ -1,5 +1,3 @@
-import React from 'https://esm.sh/react@18.2.0';
-
 const RingsIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-brand-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="9" cy="12" r="6" />
@@ -7,7 +5,7 @@ const RingsIcon = () => (
   </svg>
 );
 
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <header className="py-6">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center space-y-2">

@@ -1,9 +1,8 @@
-import React from 'https://esm.sh/react@18.2.0';
 import Header from './components/Header.tsx';
 import VowGenerator from './components/VowGenerator.tsx';
 import Footer from './components/Footer.tsx';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div className="min-h-screen flex flex-col font-sans text-brand-text">
       <Header />

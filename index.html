@@ -28,21 +28,9 @@
         }
       }
     </script>
-  <!-- Add Babel Standalone for in-browser JSX/TSX transpilation -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-brand-background">
     <div id="root"></div>
-    <!-- This script tag correctly transpiles and runs the React application as a module -->
-    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
-  <script type="module" src="/index.tsx"></script>
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>

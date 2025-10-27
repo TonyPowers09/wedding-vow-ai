@@ -1,10 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
+import { useState, useCallback, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { VowTone, VowLength } from '../types.ts';
 import { generateVow } from '../services/geminiService.ts';
 import Loader from './Loader.tsx';
 
 // Moved component definitions outside of VowGenerator to prevent re-creation on every render.
-const InputField: React.FC<{ label: string; id: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; placeholder: string; required?: boolean; type?: 'text' | 'textarea'; }> = ({ label, id, value, onChange, placeholder, required = false, type = 'text' }) => (
+type InputFieldProps = {
+  label: string;
+  id: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  placeholder: string;
+  required?: boolean;
+  type?: 'text' | 'textarea';
+};
+
+const InputField = ({ label, id, value, onChange, placeholder, required = false, type = 'text' }: InputFieldProps) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>
     {type === 'textarea' ? (
@@ -15,7 +25,15 @@ const InputField: React.FC<{ label: string; id: string; value: string; onChange:
   </div>
 );
 
-const SelectField: React.FC<{ label: string; id: string; value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; options: string[]; }> = ({ label, id, value, onChange, options }) => (
+type SelectFieldProps = {
+  label: string;
+  id: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  options: string[];
+};
+
+const SelectField = ({ label, id, value, onChange, options }: SelectFieldProps) => (
   <div>
       <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>
       <select id={id} value={value} onChange={onChange} className="w-full px-3 py-2 bg-white border border-brand-accent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-shadow appearance-none bg-no-repeat bg-right pr-8" style={{backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23C08497' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`}}>
@@ -24,7 +42,7 @@ const SelectField: React.FC<{ label: string; id: string; value: string; onChange
   </div>
 );
 
-const VowGenerator: React.FC = () => {
+const VowGenerator = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [partnerName, setPartnerName] = useState('');
   const [yearsTogether, setYearsTogether] = useState('');
@@ -48,7 +66,7 @@ const VowGenerator: React.FC = () => {
     setApiKey(key);
   }, []);
 
-  const handleGenerateVow = useCallback(async (e: React.FormEvent) => {
+  const handleGenerateVow = useCallback(async (e: FormEvent) => {
     e.preventDefault();
 
     if (!apiKey) {

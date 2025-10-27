@@ -1,6 +1,4 @@
-import React from 'https://esm.sh/react@18.2.0';
-
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <footer className="py-6">
       <div className="container mx-auto px-4">
