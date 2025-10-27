@@ -42,8 +42,10 @@ const SelectField = ({ label, id, value, onChange, options }: SelectFieldProps) 
   </div>
 );
 
+const presetApiKey = import.meta.env.VITE_GEMINI_API_KEY?.trim();
+
 const VowGenerator = () => {
-  const [apiKey, setApiKey] = useState<string | null>(null);
+  const [apiKey, setApiKey] = useState<string | null>(() => (presetApiKey && presetApiKey.length > 0 ? presetApiKey : null));
   const [partnerName, setPartnerName] = useState('');
   const [yearsTogether, setYearsTogether] = useState('');
   const [specialMemory, setSpecialMemory] = useState('');
@@ -55,6 +57,19 @@ const VowGenerator = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    if (presetApiKey && presetApiKey.length > 0) {
+      setApiKey(presetApiKey);
+      return;
+    }
+
+    if (apiKey) {
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     // Check for API key in session storage or prompt the user
     let key = sessionStorage.getItem('gemini-api-key');
     if (!key) {
@@ -63,8 +78,11 @@ const VowGenerator = () => {
         sessionStorage.setItem('gemini-api-key', key);
       }
     }
-    setApiKey(key);
-  }, []);
+
+    if (key) {
+      setApiKey(key);
+    }
+  }, [apiKey, presetApiKey]);
 
   const handleGenerateVow = useCallback(async (e: FormEvent) => {
     e.preventDefault();
