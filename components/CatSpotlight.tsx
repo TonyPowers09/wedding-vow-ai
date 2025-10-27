@@ -12,11 +12,10 @@ const CatSpotlight = () => {
       />
       <div className="text-center md:text-left space-y-2">
         <h2 className="text-2xl font-serif font-semibold text-brand-primary dark:text-brand-secondary">
-          Catnap Muse
+          Heres to Cracko and Pete
         </h2>
         <p className="text-brand-text/80 dark:text-slate-300">
-          A quick stretch, a slow blink, and endless curiosity—let this whiskered muse nudge you toward
-          vows that feel playful, affectionate, and wonderfully sincere.
+          Heres to Cracko and Pete
         </p>
       </div>
     </section>
