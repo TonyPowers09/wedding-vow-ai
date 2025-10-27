@@ -7,7 +7,7 @@ const CatSpotlight = () => {
         src={CAT_IMAGE_URL}
         alt="Pete the cat lounging comfortably."
         loading="lazy"
-        className="w-full md:w-48 h-48 object-cover rounded-2xl shadow-lg border border-white/70 dark:border-slate-600"
+        className="w-full md:w-40 h-40 object-cover rounded-2xl shadow-lg border border-white/70 dark:border-slate-600"
       />
       <div className="text-center md:text-left space-y-2">
         <h2 className="text-2xl font-serif font-semibold text-brand-primary dark:text-brand-secondary">
