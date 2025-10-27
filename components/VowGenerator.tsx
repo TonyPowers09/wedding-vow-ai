@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from 'https://esm.sh/react@18.2.0';
+import React, { useState, useCallback, useEffect } from 'https://esm.sh/react@18.2.0';
 import { VowTone, VowLength } from '../types.ts';
 import { generateVow } from '../services/geminiService.ts';
 import Loader from './Loader.tsx';
 
 // Moved component definitions outside of VowGenerator to prevent re-creation on every render.
-// This is the fix for the input fields losing focus.
 const InputField: React.FC<{ label: string; id: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; placeholder: string; required?: boolean; type?: 'text' | 'textarea'; }> = ({ label, id, value, onChange, placeholder, required = false, type = 'text' }) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-brand-text/90 mb-1">{label}</label>
@@ -26,6 +25,7 @@ const SelectField: React.FC<{ label: string; id: string; value: string; onChange
 );
 
 const VowGenerator: React.FC = () => {
+  const [apiKey, setApiKey] = useState<string | null>(null);
   const [partnerName, setPartnerName] = useState('');
   const [yearsTogether, setYearsTogether] = useState('');
   const [specialMemory, setSpecialMemory] = useState('');
@@ -36,8 +36,26 @@ const VowGenerator: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  useEffect(() => {
+    // Check for API key in session storage or prompt the user
+    let key = sessionStorage.getItem('gemini-api-key');
+    if (!key) {
+      key = prompt("Please enter your Google Gemini API Key:");
+      if (key) {
+        sessionStorage.setItem('gemini-api-key', key);
+      }
+    }
+    setApiKey(key);
+  }, []);
+
   const handleGenerateVow = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!apiKey) {
+      setError('API Key is missing. Please refresh and enter your API key.');
+      return;
+    }
+
     if (!partnerName || !specialMemory) {
         setError('Please fill in your partner\'s name and a special memory.');
         return;
@@ -50,6 +68,7 @@ const VowGenerator: React.FC = () => {
 
     try {
       const vow = await generateVow({
+        apiKey,
         partnerName,
         yearsTogether,
         specialMemory,
@@ -62,7 +81,7 @@ const VowGenerator: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [partnerName, yearsTogether, specialMemory, tone, length]);
+  }, [apiKey, partnerName, yearsTogether, specialMemory, tone, length]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(generatedVow);
@@ -70,6 +89,15 @@ const VowGenerator: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
   
+  if (!apiKey) {
+    return (
+       <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent border border-white text-center">
+         <h2 className="text-xl font-serif text-brand-primary mb-4">API Key Required</h2>
+         <p className="text-brand-text">Please refresh the page to enter your Google Gemini API Key. This application cannot function without it.</p>
+       </div>
+    )
+  }
+
   return (
     <div className="w-full max-w-2xl bg-white/60 backdrop-blur-sm p-6 md:p-10 rounded-2xl shadow-2xl shadow-brand-accent border border-white">
       <form onSubmit={handleGenerateVow} className="space-y-6">

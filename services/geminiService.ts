@@ -1,16 +1,8 @@
 import { GoogleGenAI } from "https://esm.sh/@google/genai@0.14.0";
 import { VowTone, VowLength } from '../types.ts';
 
-if (!process.env.API_KEY) {
-  // In a real browser environment, this check won't work as expected
-  // but we leave it for development environments.
-  // The app should handle the API key being missing gracefully.
-  console.warn("API_KEY environment variable is not set. The app will not work without it.");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 interface VowGenerationParams {
+  apiKey: string;
   partnerName: string;
   yearsTogether: string;
   specialMemory: string;
@@ -19,6 +11,7 @@ interface VowGenerationParams {
 }
 
 export const generateVow = async ({
+  apiKey,
   partnerName,
   yearsTogether,
   specialMemory,
@@ -26,10 +19,12 @@ export const generateVow = async ({
   length,
 }: VowGenerationParams): Promise<string> => {
   
-  if (!process.env.API_KEY) {
-    throw new Error("API key is not configured. Please set the API_KEY environment variable.");
+  if (!apiKey) {
+    throw new Error("API key is not provided. Please enter your API key to generate a vow.");
   }
   
+  const ai = new GoogleGenAI({ apiKey });
+
   const prompt = `
     You are a world-class wedding speech writer, renowned for your ability to craft deeply personal and moving vows.
     Please write a wedding vow based on the following details.
@@ -56,6 +51,10 @@ export const generateVow = async ({
     return response.text.trim();
   } catch (error) {
     console.error("Error generating vow with Gemini API:", error);
-    throw new Error("Failed to generate vow. Please check your API key and try again.");
+    // Provide a more user-friendly error message
+    if (error instanceof Error && error.message.includes('API key not valid')) {
+        throw new Error("The provided API key is not valid. Please check your key and try again.");
+    }
+    throw new Error("Failed to generate vow. There might be an issue with the API service.");
   }
 };
