@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "https://aistudiocdn.com/@google/genai@^1.27.0";
 import { VowTone, VowLength } from '../types.ts';
 
 if (!process.env.API_KEY) {

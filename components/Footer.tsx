@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from 'https://aistudiocdn.com/react@^19.2.0';
 
 const Footer: React.FC = () => {
   return (

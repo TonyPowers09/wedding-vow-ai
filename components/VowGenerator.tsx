@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'https://aistudiocdn.com/react@^19.2.0';
 import { VowTone, VowLength } from '../types.ts';
 import { generateVow } from '../services/geminiService.ts';
 import Loader from './Loader.tsx';

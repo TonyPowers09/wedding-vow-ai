@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'https://aistudiocdn.com/react@^19.2.0';
 import Header from './components/Header.tsx';
 import VowGenerator from './components/VowGenerator.tsx';
 import Footer from './components/Footer.tsx';
