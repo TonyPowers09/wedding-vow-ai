@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wedding Vow AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -44,8 +44,8 @@
 </head>
   <body class="bg-brand-background">
     <div id="root"></div>
-    <!-- Update script type to text/babel for Babel to transpile it -->
-    <script type="text/babel" data-type="module" src="/index.tsx"></script>
+    <!-- Update script type to text/babel and use a relative path for the src -->
+    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>
