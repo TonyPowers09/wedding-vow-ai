@@ -1,4 +1,4 @@
-const CAT_IMAGE_URL = '/images/pete.jpg';
+const CAT_IMAGE_URL = `${import.meta.env.BASE_URL}images/pete.jpg`;
 
 const CatSpotlight = () => {
   return (
