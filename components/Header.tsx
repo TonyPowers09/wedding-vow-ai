@@ -1,4 +1,4 @@
-import React from 'https://aistudiocdn.com/react@^19.2.0';
+import React from 'https://esm.sh/react@18.2.0';
 
 const RingsIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-brand-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

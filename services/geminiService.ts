@@ -1,8 +1,11 @@
-import { GoogleGenAI } from "https://aistudiocdn.com/@google/genai@^1.27.0";
+import { GoogleGenAI } from "https://esm.sh/@google/genai@0.14.0";
 import { VowTone, VowLength } from '../types.ts';
 
 if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable is not set");
+  // In a real browser environment, this check won't work as expected
+  // but we leave it for development environments.
+  // The app should handle the API key being missing gracefully.
+  console.warn("API_KEY environment variable is not set. The app will not work without it.");
 }
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -22,6 +25,11 @@ export const generateVow = async ({
   tone,
   length,
 }: VowGenerationParams): Promise<string> => {
+  
+  if (!process.env.API_KEY) {
+    throw new Error("API key is not configured. Please set the API_KEY environment variable.");
+  }
+  
   const prompt = `
     You are a world-class wedding speech writer, renowned for your ability to craft deeply personal and moving vows.
     Please write a wedding vow based on the following details.
