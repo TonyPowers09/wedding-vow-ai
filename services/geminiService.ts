@@ -1,8 +1,6 @@
-import { GoogleGenAI } from "https://esm.sh/@google/genai@0.14.0";
 import { VowTone, VowLength } from '../types.ts';
 
 interface VowGenerationParams {
-  apiKey: string;
   partnerName: string;
   yearsTogether: string;
   specialMemory: string;
@@ -10,51 +8,61 @@ interface VowGenerationParams {
   length: VowLength;
 }
 
+const resolveWorkerUrl = (): string => {
+  const configured = import.meta.env.VITE_GEMINI_WORKER_URL?.trim();
+  if (configured) {
+    return configured.replace(/\/+$/, '');
+  }
+
+  if (import.meta.env.DEV) {
+    return 'http://127.0.0.1:8787';
+  }
+
+  throw new Error(
+    'Gemini worker URL is not configured. Set VITE_GEMINI_WORKER_URL to your deployed Cloudflare Worker endpoint.',
+  );
+};
+
 export const generateVow = async ({
-  apiKey,
   partnerName,
   yearsTogether,
   specialMemory,
   tone,
   length,
 }: VowGenerationParams): Promise<string> => {
-  
-  if (!apiKey) {
-    throw new Error("API key is not provided. Please enter your API key to generate a vow.");
-  }
-  
-  const ai = new GoogleGenAI({ apiKey });
+  const endpoint = resolveWorkerUrl();
 
-  const prompt = `
-    You are a world-class wedding speech writer, renowned for your ability to craft deeply personal and moving vows.
-    Please write a wedding vow based on the following details.
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      partnerName,
+      yearsTogether,
+      specialMemory,
+      tone,
+      length,
+    }),
+  });
 
-    **Instructions:**
-    - The vow must be written from the perspective of the person filling out this form.
-    - It must be heartfelt, personal, and appropriate for a wedding ceremony.
-    - Do NOT include any introductory or concluding remarks like "Here is a vow for you:" or "I hope this is what you were looking for."
-    - Respond ONLY with the text of the vow itself.
-
-    **Vow Details:**
-    - Tone: ${tone}
-    - Desired Length: ${length}
-    - My Partner's Name: ${partnerName}
-    - We have been together for: ${yearsTogether}
-    - A special memory, quality, or feeling I want to include: "${specialMemory}"
-  `;
-
-  try {
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt
-    });
-    return response.text.trim();
-  } catch (error) {
-    console.error("Error generating vow with Gemini API:", error);
-    // Provide a more user-friendly error message
-    if (error instanceof Error && error.message.includes('API key not valid')) {
-        throw new Error("The provided API key is not valid. Please check your key and try again.");
+  if (!response.ok) {
+    let message = 'Failed to generate vow. Please try again later.';
+    try {
+      const data = await response.json();
+      if (typeof data?.error === 'string') {
+        message = data.error;
+      }
+    } catch {
+      // Ignore parse errors and use default message
     }
-    throw new Error("Failed to generate vow. There might be an issue with the API service.");
+    throw new Error(message);
   }
+
+  const data = (await response.json()) as { vow?: string };
+  if (!data.vow || data.vow.trim().length === 0) {
+    throw new Error('Generated vow was empty. Please try again.');
+  }
+
+  return data.vow.trim();
 };
