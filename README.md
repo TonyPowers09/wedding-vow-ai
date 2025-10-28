@@ -17,7 +17,12 @@ View your app in AI Studio: https://ai.studio/apps/temp/1
    npm install
    ```
 
-2. In `cloudflare-worker/`, add your Gemini key as a Worker secret (only needs to be done once per environment):
+2. Add your Gemini API key for local development. You can either place it in `.env.local` (already ignored by git) or store it as a Worker secret:
+   ```bash
+   echo "VITE_GEMINI_API_KEY=your-google-gemini-key" > .env.local
+   ```
+
+   Or keep the key only on the Worker:
    ```bash
    cd cloudflare-worker
    npx wrangler secret put GEMINI_API_KEY
@@ -51,9 +56,11 @@ View your app in AI Studio: https://ai.studio/apps/temp/1
    wrangler secret put GEMINI_API_KEY      # if you haven’t already in production
    ```
 
-2. In the Vite project, configure the Worker URL for the build (for example in `.env.production` or your CI environment):
+2. In the Vite project, configure the Worker URL for the build (for example in `.env.production` or your CI environment). If you prefer to call Gemini directly from the browser, set `VITE_GEMINI_API_KEY` instead:
    ```bash
    VITE_GEMINI_WORKER_URL=https://your-worker-subdomain.workers.dev
+   # or
+   VITE_GEMINI_API_KEY=your-google-gemini-key
    ```
 
 3. Build the site:
